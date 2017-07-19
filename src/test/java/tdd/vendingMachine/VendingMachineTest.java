@@ -24,11 +24,13 @@ public class VendingMachineTest {
     @InjectMocks
     private VendingMachine vendingMachine;
 
+    private List<Product> shelves;
+
     @Before
     public void setUp() {
-        List<Shelve> shelves = new ArrayList<>();
-        shelves.add(new Shelve());
-        shelves.add(new Shelve());
+        shelves = new ArrayList<>();
+        shelves.add(new Product("Cola", new BigDecimal("3.25")));
+        shelves.add(new Product("Kitkat", new BigDecimal("1.69")));
 
         vendingMachine.fillShelves(shelves);
     }
@@ -39,7 +41,7 @@ public class VendingMachineTest {
 
         vendingMachine.selectShelve(shelveNumber);
 
-        verify(display).showAmountToPay(new BigDecimal("11.05"));
+        verify(display).showAmountToPay(shelves.get(shelveNumber).getPrize());
     }
 
     @Test(expected = ShelveNotExists.class)
